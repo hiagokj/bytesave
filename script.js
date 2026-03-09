@@ -1,131 +1,103 @@
-// Elementos do DOM
-const loginForm = document.getElementById('loginForm');
-const btnCreateAccount = document.getElementById('btnCreateAccount');
-const messageDiv = document.getElementById('message');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("loginForm");
 
-// Função para exibir mensagens
-function showMessage(text, type) {
+  const emailInput = document.getElementById("loginEmail");
+  const passwordInput = document.getElementById("loginPassword");
+
+  const emailError = document.getElementById("email-error");
+  const passwordError = document.getElementById("password-error");
+
+  const messageDiv = document.getElementById("message");
+
+  function showMessage(text, type) {
     messageDiv.textContent = text;
     messageDiv.className = `message ${type}`;
-    
-    // Auto-esconder após 3 segundos
+    messageDiv.style.display = "block";
+
     setTimeout(() => {
-        messageDiv.style.display = 'none';
-        messageDiv.className = 'message';
+      messageDiv.style.display = "none";
     }, 3000);
-}
+  }
 
-// Função para validar email
-function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
+  function isValidEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
 
-// Função para validar senha
-function isValidPassword(password) {
+  function isValidPassword(password) {
     return password.length >= 6;
-}
+  }
 
-// Evento de submit do formulário de login
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
+  function validateEmail() {
     const email = emailInput.value.trim();
-    const password = passwordInput.value;
 
-    // Validações
-    if (!email || !password) {
-        showMessage('Por favor, preencha todos os campos!', 'error');
-        return;
+    if (!email) {
+      emailError.textContent = "Digite seu e-mail";
+      return false;
     }
 
     if (!isValidEmail(email)) {
-        showMessage('Por favor, insira um e-mail válido!', 'error');
-        return;
+      emailError.textContent = "E-mail inválido";
+      return false;
+    }
+
+    emailError.textContent = "";
+    return true;
+  }
+
+  function validatePassword() {
+    const password = passwordInput.value;
+
+    if (!password) {
+      passwordError.textContent = "Digite sua senha";
+      return false;
     }
 
     if (!isValidPassword(password)) {
-        showMessage('A senha deve ter pelo menos 6 caracteres!', 'error');
-        return;
+      passwordError.textContent = "A senha precisa ter pelo menos 6 caracteres";
+      return false;
     }
 
-    // Simulação de login bem-sucedido
-    showMessage('Login realizado com sucesso! Redirecionando...', 'success');
-    
-    // Aqui você pode adicionar a lógica real de autenticação
-    console.log('Tentativa de login:', { email, password });
-    
-    // Limpar formulário após sucesso (opcional)
+    passwordError.textContent = "";
+    return true;
+  }
+
+  emailInput.addEventListener("input", validateEmail);
+
+  passwordInput.addEventListener("input", validatePassword);
+
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const emailValid = validateEmail();
+    const passwordValid = validatePassword();
+
+    if (!emailValid || !passwordValid) {
+      showMessage("Corrija os erros no formulário", "error");
+      return;
+    }
+
+    const email = emailInput.value.trim();
+
+    const nome = email.split("@")[0];
+
+    localStorage.setItem("usuarioLogado", JSON.stringify({ nome, email }));
+
+    showMessage("Login realizado com sucesso", "success");
+
     setTimeout(() => {
-        loginForm.reset();
-    }, 2000);
-});
+      window.location.href = "dashboard/dashboard.html";
+    }, 1500);
+  });
 
-// Evento do botão "Criar Nova Conta"
-btnCreateAccount.addEventListener('click', () => {
-    // Simulação de criação de conta
-    showMessage('Redirecionando para criação de conta...', 'success');
-    
-    // Aqui você pode redirecionar para a página de registro
-    console.log('Redirecionar para criação de conta');
-    
-    // Simulação de redirecionamento após 2 segundos
-    setTimeout(() => {
-        alert('Página de criação de conta (simulação)');
-    }, 2000);
-});
+  const logoImg = document.querySelector(".logo img");
 
-// Validação em tempo real do email (opcional)
-emailInput.addEventListener('blur', (e) => {
-    const email = e.target.value.trim();
-    if (email && !isValidEmail(email)) {
-        e.target.style.borderColor = '#dc3545';
-    } else {
-        e.target.style.borderColor = '#e0e0e0';
-    }
-});
+  if (logoImg) {
+    logoImg.onerror = () => {
+      logoImg.style.display = "none";
 
-emailInput.addEventListener('focus', (e) => {
-    e.target.style.borderColor = '#e0e0e0';
-});
-
-// Validação em tempo real da senha (opcional)
-passwordInput.addEventListener('blur', (e) => {
-    const password = e.target.value;
-    if (password && !isValidPassword(password)) {
-        e.target.style.borderColor = '#dc3545';
-    } else {
-        e.target.style.borderColor = '#e0e0e0';
-    }
-});
-
-passwordInput.addEventListener('focus', (e) => {
-    e.target.style.borderColor = '#e0e0e0';
-});
-
-// Verificação de imagem da logo
-const logoImg = document.querySelector('.logo img');
-if (logoImg) {
-    logoImg.onerror = function() {
-        console.log('Logo não encontrada em imgs/logolobo.png. Usando emoji como fallback.');
-        this.style.display = 'none';
-        this.parentElement.innerHTML = '🐺';
+      const logoContainer = document.querySelector(".logo");
+      logoContainer.innerHTML = "🐺";
     };
-}
-
-// Função adicional para simular autenticação real (opcional)
-function authenticateUser(email, password) {
-    // Aqui você faria uma chamada AJAX/fetch para seu backend
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            // Simulação de resposta do servidor
-            if (email === 'teste@email.com' && password === '123456') {
-                resolve({ success: true, message: 'Login bem-sucedido!' });
-            } else {
-                reject({ success: false, message: 'E-mail ou senha inválidos!' });
-            }
-        }, 1000);
-    });
-}
+  }
+});
