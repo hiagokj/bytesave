@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteSave - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Lado esquerdo -->
+        <div class="features-side">
+            <div class="logo-area">
+                <div class="logo">
+                    <img src="imgs/logolobo.png" alt="ByteSave Logo">
+                </div>
+                <span class="brand-name">ByteSave</span>
+            </div>
+
+            <ul class="features-list">
+                <li class="feature-item">
+                    <span class="feature-icon">📋</span>
+                    <span>·ORGANIZE SUAS TAREFAS DE FORMA INTELIGENTE</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">📊</span>
+                    <span>·ACOMPANHE O PROGRESSO EM TEMPO REAL</span>
+                </li>
+                <li class="feature-item">
+                    <span class="feature-icon">👥</span>
+                    <span>·COLABORE COM SUA EQUIPE EFICIENTEMENTE</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Lado direito -->
+        <div class="auth-side">
+            <h2 class="auth-title">LOGIN</h2>
+            
+            <!-- ÚNICO FORMULÁRIO -->
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">E-MAIL</label>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">SENHA</label>
+                    <input type="password" id="loginPassword" class="form-input" placeholder="********" required>
+                </div>
+
+                <button type="submit" class="btn-login">ENTRAR</button>
+            </form>
+            
+            <div class="divider">
+                <span>ou</span>
+            </div>
+
+            <a href="cadastro.html">
+                <button class="btn-create">CRIAR NOVA CONTA</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Único script de login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            
+            // Validação simples
+            if(!email) {
+                alert('Digite um e-mail válido');
+                return;
+            }
+            
+            // Pega o nome antes do @ no email
+            const nome = email.split('@')[0];
+            
+            // Salva os dados do usuário
+            localStorage.setItem('usuarioLogado', JSON.stringify({
+                nome: nome,
+                email: email
+            }));
+            
+            // Redireciona para o dashboard
+            window.location.href = 'dashboard.html';
+        });
+    </script>
+</body>
+
+</html>

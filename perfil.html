@@ -1,0 +1,108 @@
+<div class="modal-overlay" id="perfilModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2># Perfil e Configurações</h2>
+            <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        
+        <div class="modal-subtitle">
+            Gerencie suas informações pessoais e preferências do sistema
+        </div>
+        
+        <div class="modal-content">
+            <!-- Informações Pessoais -->
+            <section class="profile-section">
+                <h3 class="section-title">Informações Pessoais</h3>
+                <p class="section-description">Atualize seus dados de perfil</p>
+                
+                <div class="info-card">
+                    <div class="info-row">
+                        <div class="info-label">Nome</div>
+                        <div class="info-value">jiao.kuc2tbb</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">Email</div>
+                        <div class="info-value">jiao.kuc2tbb@gmail.com</div>
+                    </div>
+                    
+                    <button class="btn-save">Salvar Alterações</button>
+                </div>
+            </section>
+            
+            <div class="separator"></div>
+            
+            <!-- Notificações -->
+            <section class="profile-section">
+                <h3 class="section-title">Notificações</h3>
+                <p class="section-description">Configure como deseja receber notificações</p>
+                
+                <div class="settings-item">
+                    <div class="settings-info">
+                        <h4>Notificações push</h4>
+                        <p>Receba notificações sobre tarefas e atualizações</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" class="toggle-input" id="pushNotify" checked>
+                        <label class="toggle-label" for="pushNotify"></label>
+                    </div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-info">
+                        <h4>Atualizações por email</h4>
+                        <p>Recebe resumos diários e semanais por email</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" class="toggle-input" id="emailNotify" checked>
+                        <label class="toggle-label" for="emailNotify"></label>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Aparência -->
+            <section class="profile-section">
+                <h3 class="section-title">Aparência</h3>
+                <p class="section-description">Personalize a aparência do sistema</p>
+                
+                <div class="settings-item">
+                    <div class="settings-info">
+                        <h4>Modo escuro</h4>
+                        <p>Ative o tema escuro para reduzir o cansaço visual</p>
+                    </div>
+                    <div class="toggle-switch">
+                        <input type="checkbox" class="toggle-input" id="darkMode">
+                        <label class="toggle-label" for="darkMode"></label>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Segurança -->
+            <section class="profile-section">
+                <h3 class="section-title">Segurança</h3>
+                <p class="section-description">Gerencie suas configurações de segurança</p>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <h4>Alterar senha</h4>
+                    </div>
+                    <button class="btn-security">Alterar</button>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <h4>Autenticação de dois fatores</h4>
+                    </div>
+                    <button class="btn-security">Configurar</button>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <h4>Excluir conta</h4>
+                    </div>
+                    <button class="btn-danger">Excluir</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
