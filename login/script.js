@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showMessage("Login realizado com sucesso", "success");
 
     setTimeout(() => {
-      window.location.href = "dashboard/dashboard.html";
+      window.location.href = "../dashboard/dashboard.html";
     }, 1500);
   });
 

@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showMessage("Conta criada com sucesso!", "success");
 
     setTimeout(() => {
-      window.location.href = "../index.html";
+      window.location.href = "../login/index.html";
     }, 1500);
   });
 });

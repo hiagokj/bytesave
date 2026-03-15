@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../login/style.css" />
     <link rel="stylesheet" href="dashboard.css" />
   </head>
 
@@ -37,12 +37,6 @@
               <a href="dashboard.html">
                 <span class="nav-icon">📊</span>
                 <span>Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span class="nav-icon">✅</span>
-                <span>Tarefas</span>
               </a>
             </li>
             <li>
@@ -75,41 +69,37 @@
             <p>Bem-vindo de volta! Aqui está o resumo das suas tarefas.</p>
           </header>
 
-          <!-- Cards de estatísticas -->
+          <!-- Cards de estatísticas  -->
           <div class="stats-container">
-            <div class="stat-card">
+            <div class="stat-card" id="cardTotal" data-filtro="todas">
               <div class="stat-number">0</div>
               <div class="stat-description">Total de Tarefas</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" id="cardConcluidas" data-filtro="concluida">
               <div class="stat-number">0</div>
               <div class="stat-description">Concluídas</div>
             </div>
-            <div class="stat-card">
-              <div class="stat-number">0</div>
-              <div class="stat-description">Em Progresso</div>
-            </div>
-            <div class="stat-card">
+            <div class="stat-card" id="cardPendentes" data-filtro="pendente">
               <div class="stat-number">0</div>
               <div class="stat-description">Pendentes</div>
             </div>
           </div>
 
-          <!-- Tarefas Recentes -->
+          <!-- Lista de tarefas  -->
           <section class="tasks-section">
-            <h2 class="tasks-title">Tarefas Recentes</h2>
-            <p class="tasks-subtitle">Últimas tarefas criadas ou atualizadas</p>
+            <h2 class="tasks-title">Minhas Tarefas</h2>
+            <p class="tasks-subtitle" id="filtroDescricao">Todas as tarefas</p>
 
             <div class="tasks-empty-state">
               <div class="empty-icon">📋</div>
               <div class="empty-divider">---</div>
-              <p class="empty-message">Nenhuma tarefa criada ainda</p>
-              <p class="empty-action">Criar primeira tarefa</p>
+              <p class="empty-message">Nenhuma tarefa encontrada</p>
+              <p class="empty-action">Que tal criar uma nova?</p>
               <button
                 class="btn-create-task"
                 onclick="document.getElementById('openNovaTarefaModal').click()"
               >
-                + CRIAR PRIMEIRA TAREFA
+                + CRIAR NOVA TAREFA
               </button>
             </div>
           </section>
@@ -121,7 +111,7 @@
       </main>
     </div>
 
-    <!-- Modal de Perfil -->
+    <!-- Modal de Perfil (idêntico ao anterior) -->
     <div class="modal-overlay" id="perfilModal">
       <div class="modal-container">
         <div class="modal-header">
@@ -212,7 +202,7 @@
       </div>
     </div>
 
-    <!-- Modal de Nova Tarefa -->
+    <!-- Modal de Nova Tarefa (sem edição) -->
     <div class="modal-overlay" id="novaTarefaModal">
       <div class="modal-container modal-tarefa">
         <div class="modal-header">
@@ -224,57 +214,48 @@
         </div>
         <div class="modal-content">
           <form id="formNovaTarefa" novalidate>
+            <!-- Campos idênticos ao original -->
             <div class="form-group">
-              <label class="form-label">
-                Título da Tarefa <span class="required">*</span>
-              </label>
-
+              <label class="form-label"
+                >Título da Tarefa <span class="required">*</span></label
+              >
               <input
                 id="tituloTarefa"
                 type="text"
                 class="form-input"
                 placeholder="Ex: Desenvolver nova funcionalidade"
               />
-
               <p class="input-error" id="tituloError"></p>
             </div>
-
             <div class="form-group">
-              <label class="form-label">
-                Descrição <span class="required">*</span>
-              </label>
-
+              <label class="form-label"
+                >Descrição <span class="required">*</span></label
+              >
               <textarea
                 id="descricaoTarefa"
                 class="form-textarea"
                 rows="4"
-                placeholder="Descreva os detalhes da tarefa..."
+                placeholder="Descreva os detalhes..."
               ></textarea>
-
               <p class="input-error" id="descricaoError"></p>
             </div>
-
             <div class="form-group">
-              <label class="form-label">
-                Categoria <span class="required">*</span>
-              </label>
-
+              <label class="form-label"
+                >Categoria <span class="required">*</span></label
+              >
               <input
                 id="categoriaTarefa"
                 type="text"
                 class="form-input"
-                placeholder="Ex: Desenvolvimento, Design, Marketing"
+                placeholder="Ex: Desenvolvimento, Design"
               />
-
               <p class="input-error" id="categoriaError"></p>
             </div>
-
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">
-                  Prioridade <span class="required">*</span>
-                </label>
-
+                <label class="form-label"
+                  >Prioridade <span class="required">*</span></label
+                >
                 <select id="prioridadeTarefa" class="form-select">
                   <option value="">Selecione</option>
                   <option value="baixa">Baixa</option>
@@ -282,15 +263,12 @@
                   <option value="alta">Alta</option>
                   <option value="urgente">Urgente</option>
                 </select>
-
                 <p class="input-error" id="prioridadeError"></p>
               </div>
-
               <div class="form-group">
-                <label class="form-label">
-                  Status <span class="required">*</span>
-                </label>
-
+                <label class="form-label"
+                  >Status <span class="required">*</span></label
+                >
                 <select id="statusTarefa" class="form-select">
                   <option value="">Selecione</option>
                   <option value="pendente">Pendente</option>
@@ -298,26 +276,20 @@
                   <option value="concluida">Concluída</option>
                   <option value="cancelada">Cancelada</option>
                 </select>
-
                 <p class="input-error" id="statusError"></p>
               </div>
             </div>
-
             <div class="form-group">
-              <label class="form-label">
-                Data de Prazo <span class="required">*</span>
-              </label>
-
+              <label class="form-label"
+                >Data de Prazo <span class="required">*</span></label
+              >
               <input id="dataTarefa" type="date" class="form-input" />
-
               <p class="input-error" id="dataError"></p>
             </div>
-
             <div class="form-actions">
               <button type="button" class="btn-cancelar" id="cancelarTarefa">
                 Cancelar
               </button>
-
               <button type="submit" class="btn-criar">Criar Tarefa</button>
             </div>
           </form>
