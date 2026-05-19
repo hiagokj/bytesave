@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html lang="pt-BR">
   <head>
@@ -299,4 +300,89 @@
 
     <script src="dashboard.js"></script>
   </body>
+=======
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ByteSave Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="loading" id="loading">Carregando...</div>
+  <div class="toast" id="toast"></div>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <h1>ByteSave</h1>
+      <p>Gestão inteligente de tarefas</p>
+
+      <nav>
+        <a href="#">Dashboard</a>
+        <a href="#taskForm">Nova tarefa</a>
+        <a href="../index.html">Página inicial</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div>
+          <h2>Painel de tarefas</h2>
+          <p>Organize sua produtividade com integração em API.</p>
+        </div>
+
+        <input type="text" id="searchInput" placeholder="Buscar tarefa...">
+      </header>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <h3 id="totalTasks">0</h3>
+          <p>Total</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="doneTasks">0</h3>
+          <p>Concluídas</p>
+        </div>
+
+        <div class="stat-card">
+          <h3 id="pendingTasks">0</h3>
+          <p>Pendentes</p>
+        </div>
+      </section>
+
+      <section class="task-form-section">
+        <h3>Nova tarefa</h3>
+
+        <form id="taskForm">
+          <input type="text" id="title" placeholder="Título da tarefa">
+          <input type="text" id="category" placeholder="Categoria">
+
+          <select id="priority">
+            <option value="Baixa">Baixa</option>
+            <option value="Média">Média</option>
+            <option value="Alta">Alta</option>
+          </select>
+
+          <button type="submit">Adicionar tarefa</button>
+        </form>
+      </section>
+
+      <section>
+        <div class="section-title">
+          <h3>Lista de tarefas</h3>
+        </div>
+
+        <div class="task-grid" id="taskList"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+>>>>>>> 15ca36d (atualizacao)
 </html>

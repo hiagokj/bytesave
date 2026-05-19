@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // ===== CARREGAR USUÁRIO =====
 function carregarDadosUsuario() {
   const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
@@ -302,3 +303,354 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarFiltros();
   carregarTarefas("todas"); // Inicia mostrando todas
 });
+=======
+const API_URL = 'https://dummyjson.com/todos';
+
+const taskList = document.getElementById('taskList');
+const loading = document.getElementById('loading');
+const toast = document.getElementById('toast');
+const form = document.getElementById('taskForm');
+const searchInput = document.getElementById('searchInput');
+
+const STORAGE_KEY = 'bytesave_tasks';
+
+let tasks = [];
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(message, type = 'success') {
+
+    toast.textContent = message;
+
+    toast.className = `toast show ${type}`;
+
+    setTimeout(() => {
+        toast.className = 'toast';
+    }, 3000);
+}
+
+/* =========================
+   LOADING
+========================= */
+
+function toggleLoading(state) {
+
+    loading.style.display = state ? 'flex' : 'none';
+}
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
+function saveLocalTasks() {
+
+    const localTasks = tasks.filter(task => task.local);
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(localTasks)
+    );
+}
+
+function getLocalTasks() {
+
+    return JSON.parse(
+        localStorage.getItem(STORAGE_KEY)
+    ) || [];
+}
+
+/* =========================
+   LOAD TASKS
+========================= */
+
+async function loadTasks() {
+
+    try {
+
+        toggleLoading(true);
+
+        const response = await fetch(`${API_URL}?limit=8`);
+
+        if (!response.ok) {
+            throw new Error('Erro ao carregar tarefas');
+        }
+
+        const data = await response.json();
+
+        const apiTasks = data.todos.map(todo => ({
+            id: todo.id,
+            title: todo.todo,
+            completed: todo.completed,
+            priority: todo.completed ? 'Baixa' : 'Alta',
+            category: 'API',
+            local: false
+        }));
+
+        const localTasks = getLocalTasks();
+
+        tasks = [...localTasks, ...apiTasks];
+
+        renderTasks(tasks);
+
+        updateStats();
+
+    } catch (error) {
+
+        showToast(error.message, 'error');
+
+    } finally {
+
+        toggleLoading(false);
+    }
+}
+
+/* =========================
+   RENDER TASKS
+========================= */
+
+function renderTasks(taskArray) {
+
+    taskList.innerHTML = '';
+
+    if (!taskArray.length) {
+
+        taskList.innerHTML = `
+            <div class="empty-state">
+                Nenhuma tarefa encontrada.
+            </div>
+        `;
+
+        return;
+    }
+
+    taskArray.forEach(task => {
+
+        const card = document.createElement('article');
+
+        card.className = 'task-card';
+
+        card.innerHTML = `
+            <div class="task-top">
+
+                <span class="badge ${task.completed ? 'done' : 'pending'}">
+                    ${task.completed ? 'Concluída' : 'Pendente'}
+                </span>
+
+                <span class="priority">
+                    ${task.priority}
+                </span>
+
+            </div>
+
+            <h3>${task.title}</h3>
+
+            <p>
+                Categoria: ${task.category}
+            </p>
+
+            <div class="task-actions">
+
+                <button
+                    class="${task.completed ? 'btn-reabrir' : 'btn-concluir'}"
+                    onclick="toggleTask(${task.id})"
+                >
+                    ${task.completed ? 'Reabrir' : 'Concluir'}
+                </button>
+
+                <button
+                    class="btn-excluir"
+                    onclick="deleteTask(${task.id})"
+                >
+                    Excluir
+                </button>
+
+            </div>
+        `;
+
+        taskList.appendChild(card);
+    });
+}
+
+/* =========================
+   UPDATE STATS
+========================= */
+
+function updateStats() {
+
+    document.getElementById('totalTasks').textContent =
+        tasks.length;
+
+    document.getElementById('doneTasks').textContent =
+        tasks.filter(task => task.completed).length;
+
+    document.getElementById('pendingTasks').textContent =
+        tasks.filter(task => !task.completed).length;
+}
+
+/* =========================
+   CREATE TASK
+========================= */
+
+async function createTask(event) {
+
+    event.preventDefault();
+
+    const title =
+        document.getElementById('title').value.trim();
+
+    const category =
+        document.getElementById('category').value.trim();
+
+    const priority =
+        document.getElementById('priority').value;
+
+    if (!title || !category) {
+
+        showToast(
+            'Preencha todos os campos.',
+            'error'
+        );
+
+        return;
+    }
+
+    try {
+
+        toggleLoading(true);
+
+        const response = await fetch(`${API_URL}/add`, {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                todo: title,
+                completed: false,
+                userId: 1
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao salvar tarefa');
+        }
+
+        const data = await response.json();
+
+        const newTask = {
+
+            id: Date.now(),
+
+            title: data.todo,
+
+            completed: false,
+
+            category,
+
+            priority,
+
+            local: true
+        };
+
+        tasks.unshift(newTask);
+
+        saveLocalTasks();
+
+        renderTasks(tasks);
+
+        updateStats();
+
+        form.reset();
+
+        showToast('Tarefa criada com sucesso!');
+
+    } catch (error) {
+
+        showToast(error.message, 'error');
+
+    } finally {
+
+        toggleLoading(false);
+    }
+}
+
+/* =========================
+   TOGGLE TASK
+========================= */
+
+function toggleTask(id) {
+
+    tasks = tasks.map(task => {
+
+        if (task.id === id) {
+
+            return {
+                ...task,
+                completed: !task.completed
+            };
+        }
+
+        return task;
+    });
+
+    saveLocalTasks();
+
+    renderTasks(tasks);
+
+    updateStats();
+
+    showToast('Tarefa atualizada!');
+}
+
+/* =========================
+   DELETE TASK
+========================= */
+
+function deleteTask(id) {
+
+    tasks = tasks.filter(task => task.id !== id);
+
+    saveLocalTasks();
+
+    renderTasks(tasks);
+
+    updateStats();
+
+    showToast('Tarefa removida.');
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+searchInput.addEventListener('input', event => {
+
+    const term =
+        event.target.value.toLowerCase();
+
+    const filteredTasks = tasks.filter(task =>
+        task.title.toLowerCase().includes(term)
+    );
+
+    renderTasks(filteredTasks);
+});
+
+/* =========================
+   EVENTS
+========================= */
+
+form.addEventListener(
+    'submit',
+    createTask
+);
+
+/* =========================
+   INIT
+========================= */
+
+loadTasks();
+>>>>>>> 15ca36d (atualizacao)
